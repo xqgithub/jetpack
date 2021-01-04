@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.jetpack.R
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -44,6 +45,11 @@ class RegisterFragment : Fragment() {
 
         mRegister.setOnClickListener {
             Toast.makeText(context, "Register", Toast.LENGTH_SHORT).show()
+            //跳转到登录页面
+            // 参数设置
+            val bundle = Bundle()
+            bundle.putString("name", "路飞")
+            findNavController().navigate(R.id.login, bundle)
         }
 
         mCancel.setOnClickListener {

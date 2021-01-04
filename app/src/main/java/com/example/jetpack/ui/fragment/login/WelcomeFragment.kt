@@ -35,6 +35,7 @@ class WelcomeFragment : Fragment() {
         btnLogin = view.findViewById(R.id.btn_login)
         btnRegister = view.findViewById(R.id.btn_register)
 
+        //1.跳转方式1
         btnLogin.setOnClickListener {
             // 设置动画参数
             val navOption = navOptions {
@@ -51,6 +52,10 @@ class WelcomeFragment : Fragment() {
             findNavController().navigate(R.id.login, bundle, navOption)
         }
 
+        //2.跳转方式2
+//        btnLogin.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.login, null))
+
+        //3.跳转方式3
         btnRegister.setOnClickListener {
             //传值的时候，用该方式跳转
             val action = WelcomeFragmentDirections

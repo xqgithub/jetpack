@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.navigateUp
 import com.example.jetpack.MainActivity
 import com.example.jetpack.R
 
@@ -41,7 +43,8 @@ class LoginFragment : androidx.fragment.app.Fragment() {
         }
 
         mCancel.setOnClickListener {
-            activity?.onBackPressed()
+//            activity?.onBackPressed()
+            findNavController().popBackStack(R.id.welcome, false)
         }
 
         val name = arguments?.getString("name")

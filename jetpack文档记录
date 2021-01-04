@@ -46,6 +46,11 @@ c.argType:标签类型
 
 五、Navigation可以绑定menus、drawers和bottomnavigation
 
+六、回退栈
+1.NavController.popBackStack()和NavController.navigateUp() 可以返回指定的目标
+2.app:popUpTo:A->B->C,如果再从C->A意味着我们在导航的时候从回退栈中删除了 B,C。
+3.app:popUpToInclusive="true" 我们同时弹出了回退栈中的第一个 A.要注意如果你没有使用，你的回退栈中将会包含两个A 的实例.
+
 
 
 ==================================================== 分割线 ====================================================
