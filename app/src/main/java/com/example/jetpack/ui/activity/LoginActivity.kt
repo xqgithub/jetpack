@@ -11,16 +11,12 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         /*val host:NavHostFragment = supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
         navController = host.navController*/
-
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-
-
         //navController.navigateUp()
     }
 }

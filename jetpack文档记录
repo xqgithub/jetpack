@@ -17,6 +17,32 @@ jetpack组件---Navigation
 2.NavHostFragment(Layout XML view)：当前Fragment的容器
 3.NavController(Kotlin/Java object)：导航的控制者
 
+四、利用SafeArgs传值
+1.在项目目录下的build.gradle文件中添加 classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
+2.模块下面的build.gradle文件添加 apply plugin: 'androidx.navigation.safeargs'
+3.login_navigation.xml中
+    <fragment
+        android:id="@+id/register"
+        android:name="com.example.jetpack.ui.fragment.login.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <argument
+            android:name="EMAIL"
+            android:defaultValue="2005@qq.com"
+            app:argType="string" />
+        <argument
+            android:name="account"
+            android:defaultValue="xixi"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            android:defaultValue="xixi"
+            app:argType="string" />
+    </fragment>
+(1)a.name:标签名字
+b.defaultValue:默认值
+c.argType:标签类型
+(2)编写完成后 点击Android studio中的Make Project按钮
 
 
 ==================================================== 分割线 ====================================================

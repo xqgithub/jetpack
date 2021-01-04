@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.jetpack.R
 
 /**
- * A simple [Fragment] subclass.
+ * 欢迎页面
  *
  */
 class WelcomeFragment : Fragment() {
@@ -46,10 +47,18 @@ class WelcomeFragment : Fragment() {
             }
             // 参数设置
             val bundle = Bundle()
-            bundle.putString("name", "TeaOf")
+            bundle.putString("name", "路飞")
             findNavController().navigate(R.id.login, bundle, navOption)
         }
+
+        btnRegister.setOnClickListener {
+            //传值的时候，用该方式跳转
+            val action = WelcomeFragmentDirections
+                .actionWelcomeToRegisterFragment()
+                .setEMAIL("haha@163.com")
+                .setAccount("哈哈")
+                .setPassword("123")
+            findNavController().navigate(action)
+        }
     }
-
-
 }

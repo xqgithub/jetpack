@@ -1,5 +1,4 @@
-package com.joe.jetpackdemo.ui.fragment.login
-
+package com.example.jetpack.ui.fragment.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,21 +11,14 @@ import android.widget.TextView
 import com.example.jetpack.MainActivity
 import com.example.jetpack.R
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
- * A simple [Fragment] subclass.
- *
+ * 登录页面
  */
 class LoginFragment : androidx.fragment.app.Fragment() {
 
-    lateinit var mCancel:TextView
-    lateinit var mLogin:Button
-    lateinit var mAccount:EditText
+    lateinit var mCancel: TextView
+    lateinit var mLogin: Button
+    lateinit var mAccount: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +47,4 @@ class LoginFragment : androidx.fragment.app.Fragment() {
         val name = arguments?.getString("name")
         mAccount.setText(name)
     }
-
-
-
 }
