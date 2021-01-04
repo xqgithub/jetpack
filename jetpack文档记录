@@ -44,6 +44,9 @@ b.defaultValue:默认值
 c.argType:标签类型
 (2)编写完成后 点击Android studio中的Make Project按钮
 
+五、Navigation可以绑定menus、drawers和bottomnavigation
+
+
 
 ==================================================== 分割线 ====================================================
 
