@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_navigation"
+    app:startDestination="@id/welcome">
+
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.joe.jetpackdemo.ui.fragment.login.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/welcome"
+        android:name="com.example.jetpack.ui.fragment.login.WelcomeFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_welcome_to_login"
+            app:destination="@id/login" />
+    </fragment>
+
+</navigation>

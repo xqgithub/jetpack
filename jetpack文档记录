@@ -1,0 +1,23 @@
+jetpack组件---Navigation
+一、是什么？
+1.是一个可简化Android导航的库和插件
+2.Navigation是用来管理Fragment的切换，并且可以通过可视化的方式，看见App的交互流程
+
+二、优点
+1.处理Fragment的切换（上文已说过）
+2.默认情况下正确处理Fragment的前进和后退
+3.为过渡和动画提供标准化的资源
+4.实现和处理深层连接
+5.可以绑定Toolbar、BottomNavigationView和ActionBar等
+6.SafeArgs（Gradle插件） 数据传递时提供类型安全性
+7.ViewModel支持
+
+三、最关键的三要素
+1.Navigation Graph(New XML resource)：这是一个新的资源文件，用户在可视化界面可以看出他能够到达的Destination(用户能够到达的屏幕界面)，以及流程关系
+2.NavHostFragment(Layout XML view)：当前Fragment的容器
+3.NavController(Kotlin/Java object)：导航的控制者
+
+
+
+==================================================== 分割线 ====================================================
+
