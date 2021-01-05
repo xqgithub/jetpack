@@ -42,4 +42,5 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-beta01'
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
+//    implementation 'com.android.support:design:29.1.1'
 }
