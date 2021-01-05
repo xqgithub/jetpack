@@ -26,8 +26,7 @@
         android:id="@+id/login"
         android:name="com.example.jetpack.ui.fragment.login.LoginFragment"
         android:label="LoginFragment"
-        tools:layout="@layout/fragment_login">
-    </fragment>
+        tools:layout="@layout/fragment_login2"></fragment>
     <!--注册-->
     <fragment
         android:id="@+id/register"

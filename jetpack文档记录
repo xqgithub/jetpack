@@ -54,4 +54,62 @@ c.argType:标签类型
 
 
 ==================================================== 分割线 ====================================================
+jetpack组件---Data Binding
+一、MVVM模式
+1.View层：xml、Activity、Fragment、Adapter和View等
+2.Model层：数据源（本地数据和网络数据等）
+3.ViewModel层：View层处理数据以及逻辑处理
 
+二、Data Binding介绍
+1.MVVM是一种架构模式
+2.Data Binding是一个实现数据和UI绑定的框架，是构建MVVM模式的一个工具
+
+三、实战步骤
+1.app模块下的build.gradle文件添加内容
+    dataBinding {
+       enabled true
+    }
+
+2.创建登录的LoginModel，LoginModel主要负责登录逻辑的处理以及两个输入框内容改变的时候数据更新的处理
+(1)ObservableField:其实是一个可观察的域，通过泛型来使用，可以使用的方法
+a.ObservableField(T value) 构造函数，设置可观察的域
+b.T get() 获取可观察的域的内容，可以使用UI控件监测它的值
+c.set(T value) 设置可观察的域，设置成功之后，会通知UI控件进行更新
+
+3.创建布局文件
+(1)引入Data Binding之后的布局文件的使用方式会和以前的布局使用方式有很大的不同
+(2)布局文件fragment_login2.xml
+a.layout:用作布局的根节点，只能包裹一个View标签，且不能包裹merge标签。
+b.data:Data Binding的数据，只能存在一个data标签。
+c.variable:data中使用，数据的变量标签，type属性指明变量的类，如com.example.jetpack.ui.viewmodel.LoginModel。name属性指明变量的名字，方便布局中使用。
+d.import:data中使用，需要使用静态方法和静态常量，如需要使用View.Visble属性的时候，则需导入<import type="android.view.View"/>。
+type属性指明类的路径，如果两个import标签导入的类名相同，则可以使用alias属性声明别名，使用的时候直接使用别名即可。
+e.include:View标签中使用，作用同普通布局中的include一样，需要使用bind:<参数名>传递参数
+
+4.Data Binding还支持
+运算符 + - / * %
+字符串连接 +
+逻辑与或 && ||
+二进制 & | ^
+一元 + - ! ~
+移位 >> >>> <<
+比较 == > < >= <= (Note that < needs to be escaped as <)
+instanceof
+Grouping ()
+Literals - character, String, numeric, null
+Cast
+方法调用
+域访问
+数组访问
+三元操作符
+
+5.生成绑定类
+布局文件创建完毕之后，点击Build下面的Make Project，让系统帮我生成绑定类
+
+
+
+
+
+
+
+==================================================== 分割线 ====================================================
