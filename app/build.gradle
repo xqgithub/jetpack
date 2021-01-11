@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-kapt'
 
 
 def cfg = rootProject.ext.android
@@ -19,6 +20,7 @@ android {
         //版本名后面添加一句话，意思就是flavor dimension 它的维度就是该版本号，这样维度就是都是统一的了
         flavorDimensions "versionCode"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -42,9 +44,32 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+//    implementation 'com.android.support:design:29.1.1'
 
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-beta01'
+
+    //navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
-//    implementation 'com.android.support:design:29.1.1'
+    //liveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
+    //viewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    //room
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+
+    //stetho 调试工具
+    implementation "com.facebook.stetho:stetho:1.4.1"
+    implementation "com.facebook.stetho:stetho-okhttp3:1.4.1"
+    //为方法数超过 64K 的应用启用 MultiDex
+    implementation "androidx.multidex:multidex:2.0.1"
+    /**协程**/
+    //依赖协程核心库
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+    //依赖当前平台所对应的平台库
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
+
 }

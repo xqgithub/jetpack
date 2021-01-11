@@ -1,6 +1,8 @@
 package com.example.jetpack.ui.fragment.login
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +10,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.jetpack.R
+import com.example.jetpack.application.MyApplication
+import com.example.jetpack.data.entity.User
 import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * 注册页面
@@ -36,6 +43,10 @@ class RegisterFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
+
+    private val scope = CoroutineScope(Dispatchers.Main)
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -44,12 +55,23 @@ class RegisterFragment : Fragment() {
         mEmailEt = view.findViewById(R.id.et_email)
 
         mRegister.setOnClickListener {
-            Toast.makeText(context, "Register", Toast.LENGTH_SHORT).show()
-            //跳转到登录页面
-            // 参数设置
-            val bundle = Bundle()
-            bundle.putString("name", "路飞")
-            findNavController().navigate(R.id.login, bundle)
+            //注册用户并且保存到数据库中
+            val email = et_email.text.toString().trim()
+            val account = et_account.text.toString().trim()
+            val pwd = et_pwd.text.toString().trim()
+            val user = User(account, email, pwd, 30)
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    val num = MyApplication.appDatabase.userDao().insertUser(user)
+                    println("插入数据：${num}")
+                }
+                Toast.makeText(context, "Register", Toast.LENGTH_SHORT).show()
+                //跳转到登录页面
+                // 参数设置
+                val bundle = Bundle()
+                bundle.putString("name", account)
+                findNavController().navigate(R.id.login, bundle)
+            }
         }
 
         mCancel.setOnClickListener {

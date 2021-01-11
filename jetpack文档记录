@@ -106,6 +106,90 @@ Cast
 5.生成绑定类
 布局文件创建完毕之后，点击Build下面的Make Project，让系统帮我生成绑定类
 
+==================================================== 分割线 ====================================================
+jetpack组件---ViewModel & LiveData
+
+一、LiveData的作用
+1.ViewModel和LiveData在整个MVVM架构中担当数据驱动的职责，这也是MVVM模式中ViewModel层的作用
+2.LiveData作用跟RxJava类似，是观察数据的类，相比RxJava，它能够在Activity、Fragment和Service之中正确的处理生命周期
+
+二、LiveData的优点
+1.数据变更的时候更新UI
+2.没有内存泄漏
+3.不会因为停止Activity崩溃
+4.无需手动处理生命周期
+5.共享资源
+
+三、使用方式
+1.observe(@NonNull LifecycleOwner owner, @NonNull Observer<? super T> observer)：
+最常用的方法，需要提供Observer处理数据变更后的处理。LifecycleOwner则是我们能够正确处理声明周期的关键！
+2.setValue(T value)：设置数据
+3.getValue():T ：获取数据
+4.postValue(T value)：在主线程中更新数据
+
+四、配合使用
+绝大部分的LiveData都是配合其他Android Jetpack组件使用的
+
+五、ViewModel
+1.ViewModel同样具有生命周期意识的处理跟UI相关的数据，并且，当设备的一些配置信息改变（例如屏幕旋转）它的数据不会消失
+2.ViewModel的另一个特点就是同一个Activity的Fragment之间可以使用ViewModel实现共享数据
+
+六、viewmodel的使用方法
+1.继承ViewModel即可
+
+
+==================================================== 分割线 ====================================================
+jetpack组件---Room数据库
+
+一、Room是一个基于SQLite的强大数据库框架
+
+二、room的优点
+1.使用编译时注解，能够对@Query和@Entity里面的SQL语句等进行验证。
+2.与SQL语句的使用更加贴近，能够降低学习成本。
+3.对RxJava 2的支持（大部分都Android数据库框架都支持），对LiveData的支持。
+4.@Embedded能够减少表的创建。
+
+三、组件组成
+1.Room由三个重要的组件组成：Database、Entity、DAO。
+(1).Database：包含数据库持有者，并作为与应用持久关联数据的底层连接的主要访问点
+(2).Database对应的类必须满足下面几个条件:
+a.必须是abstract类而且的extends RoomDatabase
+b.必须在类头的注释中包含与数据库关联的实体列表(Entity对应的类)
+c.包含一个具有0个参数的抽象方法，并返回用@Dao注解的类
+(3)获取Database实例:在运行时，你可以通过Room.databaseBuilder() 或者 Room.inMemoryDatabaseBuilder()
+(4).Entity：代表数据库中某个表的实体类。
+(5).DAO：包含用于访问数据库的方法。
+
+四、添加依赖
+在项目的build.gradle文件中 room 标签下
+
+五.创建表
+(1)注解理解：
+a.@Entity：声明这是一个表（实体），主要参数：tableName-表名、foreignKeys-外键、indices-索引。
+b.@ColumnInfo:主要用来修改在数据库中的字段名。
+c.@PrimaryKey:声明该字段主键并可以声明是否自动创建
+d.@Ignore:声明某个字段只是临时用，不存储在数据库中。
+e.@Embedded:用于嵌套，里面的字段同样会存储在数据库中。
+
+4.建立数据处理的方法，就是数据的增删查改。如果想声明一个Dao，只要在抽象类或者接口加一个@Dao注解就行
+(1)增删改查方法：
+a.@Insert:注解声明当前的方法为新增的方法
+b.@Delete:注解声明当前的方法是一个删除方法
+c.@Update:注解声明当前方法是一个更新方法
+d.@Query:注解不仅可以声明这是一个查询语句，也可以用来删除和修改，不可以用来新增
+
+5.创建数据库
+创建一个数据库对象是一件非常消耗资源，使用单例可以避免过多的资源消耗
+(1)@Database注解声明当前是一个数据库文件
+(2)注解中entities变量声明数据库中的表（实体）
+
+
+
+
+
+
+
+
 
 
 

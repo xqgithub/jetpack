@@ -15,6 +15,12 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.jetpack.MainActivity
 import com.example.jetpack.R
+import com.example.jetpack.application.MyApplication
+import com.example.jetpack.data.entity.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.w3c.dom.Text
 
 /**
@@ -26,6 +32,9 @@ class LoginModel constructor(name: String, pwd: String, context: Context, fragme
     val myPwd = ObservableField<String>(pwd)
     var context: Context = context
     var myfragment: Fragment = fragment
+
+
+    private val scope = CoroutineScope(Dispatchers.Main)
 
     /**
      * 用户名改变回调的函数
@@ -42,14 +51,24 @@ class LoginModel constructor(name: String, pwd: String, context: Context, fragme
     }
 
     fun login() {
-        if (myName.get().equals("路飞")
-            && myPwd.get().equals("123456")
-        ) {
-            Toast.makeText(context, "账号密码正确", Toast.LENGTH_SHORT).show()
-            val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
-        } else {
-            Toast.makeText(context, "账号密码不正确，请重新输入！", Toast.LENGTH_SHORT).show()
+        //1.先从数据库中查询数据
+        scope.launch {
+            var user: User?
+            withContext(Dispatchers.IO) {
+                user = MyApplication.appDatabase.userDao().getUserByUsername(myName.get()!!)
+            }
+            user?.let {
+                if (myPwd.get().equals(user!!.password)
+                ) {
+                    Toast.makeText(context, "账号密码正确", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, MainActivity::class.java)
+                    context.startActivity(intent)
+                } else {
+                    Toast.makeText(context, "账号密码不正确，请重新输入！", Toast.LENGTH_SHORT).show()
+                }
+            } ?: let {
+                Toast.makeText(context, "该用户没有注册，请注册后再登录！", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
