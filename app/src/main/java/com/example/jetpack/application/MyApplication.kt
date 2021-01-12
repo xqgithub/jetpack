@@ -6,10 +6,10 @@ import com.facebook.stetho.Stetho
 
 class MyApplication : MultiDexApplication() {
 
-    lateinit var myapplication: MyApplication
 
     companion object {
         lateinit var appDatabase: AppDatabase
+        lateinit var myapplication: MyApplication
     }
 
 

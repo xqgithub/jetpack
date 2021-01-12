@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.jetpack.R
 import com.example.jetpack.application.MyApplication
+import com.example.jetpack.data.RepositoryProvider
 import com.example.jetpack.data.entity.Book
 import com.example.jetpack.utils.SPreferenceUtils
 import kotlinx.android.synthetic.main.fragment_info.*
@@ -21,7 +22,8 @@ import kotlinx.coroutines.withContext
 class InfoFragment : Fragment() {
 
     private val scope = CoroutineScope(Dispatchers.Main)
-
+    private val userrepostitory = RepositoryProvider.providerUserRepository(MyApplication.myapplication)
+    private val bookrepostitory = RepositoryProvider.providerBookRepository(MyApplication.myapplication)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,10 +47,25 @@ class InfoFragment : Fragment() {
             scope.launch {
                 withContext(Dispatchers.IO) {
                     //1.获取当前登录用户的信息
-                    var user = MyApplication.appDatabase.userDao().getUserByUsername(logined_username)
+                    var user = userrepostitory.getUserByUsername(logined_username)
                     user?.let {
-                        MyApplication.appDatabase.bookDao().insertBook(Book("Android学习阶段一_${it.username}", it.id))
-                        MyApplication.appDatabase.bookDao().insertBook(Book("Android学习阶段二_${it.username}", it.id))
+                        //2.保存用户的读书信息
+                        bookrepostitory.insertBook(Book("Android学习阶段一_${it.username}", it.id))
+                        bookrepostitory.insertBook(Book("Android学习阶段二_${it.username}", it.id))
+                    }
+                }
+            }
+        }
+
+        tv_viewbook.setOnClickListener {
+            scope.launch {
+                var books: List<Book>?
+                withContext(Dispatchers.IO) {
+                    books = bookrepostitory.getAllBook()
+                }
+                books?.let {
+                    it.forEach { book ->
+                        println("书籍的名称：${book.title}")
                     }
                 }
             }

@@ -12,6 +12,10 @@ interface UserDao {
     @Query("select * from users where user_name = :username")
     fun getUserByUsername(username: String): User?
 
+    @Query("select * from users")
+    fun getAllUsers(): List<User>?
+
+
     /*当数据库中已经有此用户的时候，直接替换*/
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User): Long

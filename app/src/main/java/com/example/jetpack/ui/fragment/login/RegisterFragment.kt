@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.jetpack.R
 import com.example.jetpack.application.MyApplication
+import com.example.jetpack.data.RepositoryProvider
 import com.example.jetpack.data.entity.User
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +46,7 @@ class RegisterFragment : Fragment() {
 
 
     private val scope = CoroutineScope(Dispatchers.Main)
+    private val userrepostitory = RepositoryProvider.providerUserRepository(MyApplication.myapplication)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +65,7 @@ class RegisterFragment : Fragment() {
             val user = User(account, email, pwd, 30, "新世界---人鱼岛")
             scope.launch {
                 withContext(Dispatchers.IO) {
-                    val num = MyApplication.appDatabase.userDao().insertUser(user)
+                    val num = userrepostitory.insertUser(user)
                     println("插入数据：${num}")
                 }
                 Toast.makeText(context, "Register", Toast.LENGTH_SHORT).show()

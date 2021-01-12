@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.jetpack.MainActivity
 import com.example.jetpack.R
 import com.example.jetpack.application.MyApplication
+import com.example.jetpack.data.RepositoryProvider
 import com.example.jetpack.data.entity.User
 import com.example.jetpack.utils.SPreferenceUtils
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +34,7 @@ class LoginModel constructor(name: String, pwd: String, context: Context, fragme
     val myPwd = ObservableField<String>(pwd)
     var context: Context = context
     var myfragment: Fragment = fragment
-
+    private val userrepostitory = RepositoryProvider.providerUserRepository(MyApplication.myapplication)
 
     private val scope = CoroutineScope(Dispatchers.Main)
     var logined_username: String by SPreferenceUtils(
@@ -62,7 +63,7 @@ class LoginModel constructor(name: String, pwd: String, context: Context, fragme
         scope.launch {
             var user: User?
             withContext(Dispatchers.IO) {
-                user = MyApplication.appDatabase.userDao().getUserByUsername(myName.get()!!)
+                user = userrepostitory.getUserByUsername(myName.get()!!)
             }
             user?.let {
                 if (myPwd.get().equals(it.password)
