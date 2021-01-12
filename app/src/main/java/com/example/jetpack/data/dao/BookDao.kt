@@ -11,11 +11,11 @@ import com.example.jetpack.data.entity.Book
 interface BookDao {
 
     @Query("select * from book where book_user_id = :book_user_id")
-    fun getBookByUserID(book_user_id: Int): Book?
+    fun getBookByUserID(book_user_id: Int): LiveData<List<Book>?>
 
 
     @Query("select * from book ")
-    fun getAllBook(): List<Book>
+    fun getAllBook(): LiveData<List<Book>?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBook(book: Book): Long

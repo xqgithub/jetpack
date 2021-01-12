@@ -5,10 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.example.jetpack.R
 import com.example.jetpack.application.MyApplication
 import com.example.jetpack.data.RepositoryProvider
 import com.example.jetpack.data.entity.Book
+import com.example.jetpack.ui.viewmodel.CustomViewModelProvider
+import com.example.jetpack.ui.viewmodel.InfoModel
 import com.example.jetpack.utils.SPreferenceUtils
 import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +28,11 @@ class InfoFragment : Fragment() {
     private val scope = CoroutineScope(Dispatchers.Main)
     private val userrepostitory = RepositoryProvider.providerUserRepository(MyApplication.myapplication)
     private val bookrepostitory = RepositoryProvider.providerBookRepository(MyApplication.myapplication)
+
+    // by viewModels 需要依赖 "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
+    private val viewModel: InfoModel by viewModels {
+        CustomViewModelProvider.providerInfoModelFactory(MyApplication.myapplication)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,18 +66,30 @@ class InfoFragment : Fragment() {
             }
         }
 
-        tv_viewbook.setOnClickListener {
-            scope.launch {
-                var books: List<Book>?
-                withContext(Dispatchers.IO) {
-                    books = bookrepostitory.getAllBook()
-                }
-                books?.let {
-                    it.forEach { book ->
-                        println("书籍的名称：${book.title}")
-                    }
+
+        //观察者模式，数据变化就会调用
+        viewModel.books.observe(viewLifecycleOwner, Observer {
+            it?.let { listbook ->
+                listbook.forEach { book ->
+                    println("书籍的名称：${book.title}")
                 }
             }
+        })
+
+
+        tv_viewbook.setOnClickListener {
+            viewModel.setUserID(1)
+//            scope.launch {
+//                var books: List<Book>?
+//                withContext(Dispatchers.IO) {
+//                    books = bookrepostitory.getAllBook()
+//                }
+//                books?.let {
+//                    it.forEach { book ->
+//                        println("书籍的名称：${book.title}")
+//                    }
+//                }
+//            }
         }
     }
 }

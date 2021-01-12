@@ -16,6 +16,11 @@ class BookRepostitory private constructor(private val bookDao: BookDao) {
     fun getAllBook() = bookDao.getAllBook()
 
     /**
+     * 获得书籍根据user_id
+     */
+    fun getBookByUserID(book_user_id: Int) = bookDao.getBookByUserID(book_user_id)
+
+    /**
      * 插入书籍---单
      */
     fun insertBook(book: Book) = bookDao.insertBook(book)
