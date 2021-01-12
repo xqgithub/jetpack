@@ -183,16 +183,11 @@ d.@Query:注解不仅可以声明这是一个查询语句，也可以用来删�
 (1)@Database注解声明当前是一个数据库文件
 (2)注解中entities变量声明数据库中的表（实体）
 
-
-
-
-
-
-
-
-
-
-
+6.数据库升级、迁移
+(1).Room里面以Migration类的形式提供可一个简化SQLite迁移的抽象层。Migration提供了从一个版本到另一个版本迁移的时候应该执行的操作
+(2).版本1的时候添加allowMainThreadQueries()
+(3).版本1到版本2的时候添加addMigrations(MIGRATION_1_2) MIGRATION_1_2为方法
+(4).版本2到版本3的时候添加addMigrations(MIGRATION_1_2,MIGRATION_2_3)MIGRATION_1_2,MIGRATION_2_3 都是方法
 
 
 

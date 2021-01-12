@@ -1,6 +1,6 @@
 package com.example.jetpack.data.entity
 
-import android.graphics.Bitmap
+import android.location.Address
 import androidx.room.*
 
 @Entity(
@@ -14,7 +14,9 @@ data class User(
     @ColumnInfo(name = "pass_word")
     val password: String,
     @ColumnInfo(name = "user_age")
-    val userage: Int
+    val userage: Int,
+    @ColumnInfo(name = "user_address")
+    val address: String? = ""
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_id")

@@ -59,7 +59,8 @@ class RegisterFragment : Fragment() {
             val email = et_email.text.toString().trim()
             val account = et_account.text.toString().trim()
             val pwd = et_pwd.text.toString().trim()
-            val user = User(account, email, pwd, 30)
+//            val user = User(account, email, pwd, 30)
+            val user = User(account, email, pwd, 30, "新世界---人鱼岛")
             scope.launch {
                 withContext(Dispatchers.IO) {
                     val num = MyApplication.appDatabase.userDao().insertUser(user)

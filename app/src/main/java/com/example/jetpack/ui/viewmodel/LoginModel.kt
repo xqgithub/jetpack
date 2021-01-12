@@ -17,6 +17,7 @@ import com.example.jetpack.MainActivity
 import com.example.jetpack.R
 import com.example.jetpack.application.MyApplication
 import com.example.jetpack.data.entity.User
+import com.example.jetpack.utils.SPreferenceUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +36,12 @@ class LoginModel constructor(name: String, pwd: String, context: Context, fragme
 
 
     private val scope = CoroutineScope(Dispatchers.Main)
+    var logined_username: String by SPreferenceUtils(
+        context,
+        "user",
+        "username",
+        "我是已经登录的用户"
+    )
 
     /**
      * 用户名改变回调的函数
@@ -58,11 +65,15 @@ class LoginModel constructor(name: String, pwd: String, context: Context, fragme
                 user = MyApplication.appDatabase.userDao().getUserByUsername(myName.get()!!)
             }
             user?.let {
-                if (myPwd.get().equals(user!!.password)
+                if (myPwd.get().equals(it.password)
                 ) {
                     Toast.makeText(context, "账号密码正确", Toast.LENGTH_SHORT).show()
+
+                    logined_username = it.username
+
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
+
                 } else {
                     Toast.makeText(context, "账号密码不正确，请重新输入！", Toast.LENGTH_SHORT).show()
                 }
