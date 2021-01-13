@@ -1,12 +1,21 @@
 package com.example.jetpack.data.repository
 
+import android.accounts.Account
 import com.example.jetpack.data.dao.UserDao
 import com.example.jetpack.data.entity.User
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  * 数据处理仓库---用户
  */
 class UserRepostitory private constructor(private val userDao: UserDao) {
+
+
+    /**
+     * 根据id选择用户
+     */
+    fun findUserById(id: Long) = userDao.getUserById(id)
 
     /**
      * 获得所有的用户
@@ -21,8 +30,9 @@ class UserRepostitory private constructor(private val userDao: UserDao) {
     /**
      * 插入用户---单
      */
-    fun insertUser(user: User) = userDao.insertUser(user)
-
+    fun register(user: User): Long {
+        return userDao.insertUser(user)
+    }
 
     companion object {
         @Volatile

@@ -1,5 +1,6 @@
 package com.example.jetpack.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.jetpack.data.entity.User
 
@@ -7,7 +8,7 @@ import com.example.jetpack.data.entity.User
 interface UserDao {
 
     @Query("select * from users where user_id = :user_id")
-    fun getUserById(user_id: String): User?
+    fun getUserById(user_id: Long): User?
 
     @Query("select * from users where user_name = :username")
     fun getUserByUsername(username: String): User?
