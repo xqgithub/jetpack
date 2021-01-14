@@ -37,6 +37,8 @@ class LoginModel constructor(name: String, pwd: String, context: Context, fragme
     private val userrepostitory = RepositoryProvider.providerUserRepository(MyApplication.myapplication)
 
     private val scope = CoroutineScope(Dispatchers.Main)
+
+    //已经登录的用户名
     var logined_username: String by SPreferenceUtils(
         context,
         "user",

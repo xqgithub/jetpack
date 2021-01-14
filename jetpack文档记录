@@ -137,10 +137,8 @@ jetpack组件---ViewModel & LiveData
 六、viewmodel的使用方法
 1.继承ViewModel即可
 
-
-
-
-
+七、LiveData如何共享数据
+1.两个fragment有同一个activity
 
 ==================================================== 分割线 ====================================================
 jetpack组件---Room数据库

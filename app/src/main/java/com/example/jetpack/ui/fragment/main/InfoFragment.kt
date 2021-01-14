@@ -25,13 +25,9 @@ import kotlinx.coroutines.withContext
  */
 class InfoFragment : Fragment() {
 
-    private val scope = CoroutineScope(Dispatchers.Main)
-    private val userrepostitory = RepositoryProvider.providerUserRepository(MyApplication.myapplication)
-    private val bookrepostitory = RepositoryProvider.providerBookRepository(MyApplication.myapplication)
-
     // by viewModels 需要依赖 "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
     private val viewModel: InfoModel by viewModels {
-        CustomViewModelProvider.providerInfoModelFactory(MyApplication.myapplication)
+        CustomViewModelProvider.providerInfoModelFactory(activity!!)
     }
 
     override fun onCreateView(
@@ -45,25 +41,10 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var logined_username: String by SPreferenceUtils(
-            context!!,
-            "user",
-            "username",
-            "我是已经登录的用户"
-        )
+
 
         tv_readbook.setOnClickListener {
-            scope.launch {
-                withContext(Dispatchers.IO) {
-                    //1.获取当前登录用户的信息
-                    var user = userrepostitory.getUserByUsername(logined_username)
-                    user?.let {
-                        //2.保存用户的读书信息
-                        bookrepostitory.insertBook(Book("Android学习阶段一_${it.username}", it.id))
-                        bookrepostitory.insertBook(Book("Android学习阶段二_${it.username}", it.id))
-                    }
-                }
-            }
+            viewModel.insertBooks()
         }
 
 
@@ -78,18 +59,7 @@ class InfoFragment : Fragment() {
 
 
         tv_viewbook.setOnClickListener {
-            viewModel.setUserID(1)
-//            scope.launch {
-//                var books: List<Book>?
-//                withContext(Dispatchers.IO) {
-//                    books = bookrepostitory.getAllBook()
-//                }
-//                books?.let {
-//                    it.forEach { book ->
-//                        println("书籍的名称：${book.title}")
-//                    }
-//                }
-//            }
+            viewModel.setUserID()
         }
     }
 }
