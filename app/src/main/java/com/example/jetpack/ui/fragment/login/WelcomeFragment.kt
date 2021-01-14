@@ -48,7 +48,7 @@ class WelcomeFragment : Fragment() {
             }
             // 参数设置
             val bundle = Bundle()
-            bundle.putString("name", "路飞")
+            bundle.putString("name", "哈哈")
             findNavController().navigate(R.id.login, bundle, navOption)
         }
 

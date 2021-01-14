@@ -8,15 +8,18 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.jetpack.data.dao.BookDao
+import com.example.jetpack.data.dao.ShoeDao
 import com.example.jetpack.data.dao.UserDao
 import com.example.jetpack.data.entity.Book
+import com.example.jetpack.data.entity.Shoe
 import com.example.jetpack.data.entity.User
 
-@Database(entities = [User::class, Book::class], version = 2, exportSchema = false)
+@Database(entities = [User::class, Book::class, Shoe::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun bookDao(): BookDao
+    abstract fun shoeDao(): ShoeDao
 
     companion object {
         @Volatile
