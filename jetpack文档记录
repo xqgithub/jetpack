@@ -194,13 +194,31 @@ d.@Query:注解不仅可以声明这是一个查询语句，也可以用来删�
 ==================================================== 分割线 ====================================================
 jetpack组件---Paging
 
-一、
+一、做什么的？
+1.Paging是分页库
 
+二、关键元素
+1.PagedList：一个可以以分页形式异步加载数据的容器，可以跟RecyclerView很好的结合
+2.DataSource或DataSource.Factory：数据源，DataSource将数据转变成PagedList，DataSource.Factory则用来创建DataSource
+3.LivePagedListBuilder：用来生成LiveData<PagedList>，需要DataSource.Factory参数
+4.BoundaryCallback：数据到达边界的回调
+5.PagedListAdapter：一种RecyclerView的适配器
 
+三、优点
+1.RxJava 2以及Android Jetpack的支持，如LiveData、Room。
+2.自定义分页策略。
+3.异步处理数据。
+4.结合RecyclerView等
 
+四、创建数据源
+1.非Room数据集源:没有使用Room数据库，我们需要自定义实现DataSource，通常实现DataSource有三种方式
+(1).PageKeyedDataSource<Key, Value>:分页请求数据的场景
+(2).ItemKeyedDataSource<Key, Value>:以表的某个列为key，加载其后的N个数据（个人理解以某个字段进行排序，然后分段加载数据）
+(3).PositionalDataSource<T>:当数据源总数特定，根据指定位置请求数据的场景
 
-
-
+a.创建CustomPageDataSource继承PageKeyedDataSource<Int, Shoe>()
+b.创建CustomPageDataSourceFactory继承DataSource.Factory<Int, Shoe>()
+c.创建ShoePageListAdapter继承PagedListAdapter<Shoe, ShoePageListAdapter.ShoeAdapterViewHolder>(ShoeDiffCallback())
 
 
 ==================================================== 分割线 ====================================================

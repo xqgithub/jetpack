@@ -13,6 +13,7 @@ import com.example.jetpack.R
 import com.example.jetpack.application.MyApplication
 import com.example.jetpack.data.entity.Shoe
 import com.example.jetpack.ui.adapter.ShoeAdapter
+import com.example.jetpack.ui.adapter.ShoePageListAdapter
 import com.example.jetpack.ui.viewmodel.CustomViewModelProvider
 import com.example.jetpack.ui.viewmodel.ShoeModel
 import com.google.gson.Gson
@@ -70,9 +71,14 @@ class MarketFragment : Fragment() {
         rv_shoe.layoutManager = linearlayoutmanager
 
         //初始化recyclerview的适配器
-        val shoeAdapter = ShoeAdapter(context!!)
-        rv_shoe.adapter = shoeAdapter
-        onSubscribeUi(shoeAdapter)
+//        val shoeAdapter = ShoeAdapter(context!!)
+//        rv_shoe.adapter = shoeAdapter
+//        onSubscribeUi(shoeAdapter)
+
+
+        val shoePageListAdapter = ShoePageListAdapter(context!!)
+        rv_shoe.adapter = shoePageListAdapter
+        onSubscribeUi2(shoePageListAdapter)
     }
 
     /**
@@ -83,6 +89,15 @@ class MarketFragment : Fragment() {
             if (it != null) {
                 adapter.updateShoeData(it)
                 adapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+
+    private fun onSubscribeUi2(adapter: ShoePageListAdapter) {
+        viewModel.shoes.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                adapter.submitList(it)
             }
         })
     }

@@ -14,7 +14,6 @@ interface ShoeDao {
     @Query("select * from shoe")
     fun getAllShoesLD2(): List<Shoe>
 
-
     /**
      * 通过品牌查询鞋子
      */
@@ -31,6 +30,10 @@ interface ShoeDao {
      */
     @Delete
     fun deleteShoes(shoes: List<Shoe>)
+
+    // 通过鞋子的范围寻找Index
+    @Query("select * from shoe where id between :startIndex and :endIndex order by id asc")
+    fun findShoesByIndexRange(startIndex: Long, endIndex: Long): List<Shoe>
 
 
 }

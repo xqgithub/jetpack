@@ -17,4 +17,8 @@ object ConfigConstants {
             MyApplication.myapplication.applicationContext,
             null
         ).absolutePath + File.separator + "AGlideImage"
+
+
+    // 单个页面大小
+    const val SINGLE_PAGE_SIZE = 5
 }

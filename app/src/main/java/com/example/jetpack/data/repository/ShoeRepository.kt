@@ -24,6 +24,12 @@ class ShoeRepository private constructor(private val shoeDao: ShoeDao) {
     fun deleteShoes(shoes: List<Shoe>) = shoeDao.deleteShoes(shoes)
 
 
+    /**
+     * 通过id的范围寻找鞋子
+     */
+    fun getPageShoes(startIndex: Long, endIndex: Long): List<Shoe> = shoeDao.findShoesByIndexRange(startIndex, endIndex)
+
+
     companion object {
         @Volatile
         private var instance: ShoeRepository? = null

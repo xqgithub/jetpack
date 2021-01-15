@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -15,13 +16,12 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.jetpack.R
 import com.example.jetpack.data.entity.Shoe
-import com.example.jetpack.utils.ScreenUtils
 
-class ShoeAdapter constructor(
-    private val context: Context
-) : RecyclerView.Adapter<ShoeAdapter.ShoeAdapterViewHolder>() {
+/**
+ * 分页适配器
+ */
+class ShoePageListAdapter constructor(private val context: Context) : PagedListAdapter<Shoe, ShoePageListAdapter.ShoeAdapterViewHolder>(ShoeDiffCallback()) {
 
-    private var items: List<Shoe>? = null
 
     class ShoeAdapterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val iv_shoe: ImageView = view.findViewById(R.id.iv_shoe) as ImageView
@@ -29,27 +29,11 @@ class ShoeAdapter constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShoeAdapterViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.adapter_shoe_item, parent, false)
-        return ShoeAdapterViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        items?.let {
-            return it.size
-        } ?: let {
-            return 0
-        }
-    }
-
-    /**
-     * 更新数据
-     */
-    fun updateShoeData(items: List<Shoe>) {
-        this.items = items
+        return ShoePageListAdapter.ShoeAdapterViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ShoeAdapterViewHolder, position: Int) {
-
-        Glide.with(context).load(items?.get(position)?.imageUrl)
+        Glide.with(context).load(getItem(position)?.imageUrl)
             .listener(object : RequestListener<Drawable?> {
                 override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                     println("loadUrlToImagaViewFragment =-= 图片加载失败")
@@ -72,9 +56,11 @@ class ShoeAdapter constructor(
 
 
         holder.itemView.setOnClickListener {
-            items?.let {
-                println("${it[position].id}\n${it[position].name}\n${it[position].price}\n${it[position].brand}\n${it[position].description}")
+            getItem(position)?.let {
+                println("${it.id}\n${it.name}\n${it.price}\n${it.brand}\n${it.description}")
             }
         }
     }
+
+
 }

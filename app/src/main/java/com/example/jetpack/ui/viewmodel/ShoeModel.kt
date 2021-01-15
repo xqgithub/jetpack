@@ -4,7 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.example.jetpack.application.MyApplication
+import com.example.jetpack.data.datasource.CustomPageDataSourceFactory
 import com.example.jetpack.data.entity.Shoe
 import com.example.jetpack.data.repository.ShoeRepository
 import com.google.gson.Gson
@@ -22,14 +25,25 @@ class ShoeModel constructor(private val shoeRepository: ShoeRepository) : ViewMo
         value = "All"
     }
 
-    // 鞋子集合的观察类
-    val shoes = brand.switchMap {
-        if (it == "All") {
-            shoeRepository.getAllShoes()
-        } else {
-            shoeRepository.getShoesByBrand(it)
-        }
-    }
+    //1. 鞋子集合的观察类,不带分页的
+//    val shoes = brand.switchMap {
+//        if (it == "All") {
+//            shoeRepository.getAllShoes()
+//        } else {
+//            shoeRepository.getShoesByBrand(it)
+//        }
+//    }
+
+    //2. 鞋子集合的观察类，带分页的
+    val shoes = LivePagedListBuilder<Int, Shoe>(
+        CustomPageDataSourceFactory(shoeRepository) // DataSourceFactory
+        , PagedList.Config.Builder()
+            .setPageSize(5) // 分页加载的数量
+            .setEnablePlaceholders(false) // 当item为null是否使用PlaceHolder展示
+            .setInitialLoadSizeHint(5) // 预加载的数量
+            .build()
+    ).build()
+
 
     fun setBrand(brand: String) {
         this.brand.value = brand
@@ -74,4 +88,6 @@ class ShoeModel constructor(private val shoeRepository: ShoeRepository) : ViewMo
             }
         }
     }
+
+
 }
