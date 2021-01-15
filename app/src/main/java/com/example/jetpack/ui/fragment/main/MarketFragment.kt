@@ -5,12 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jetpack.R
 import com.example.jetpack.application.MyApplication
 import com.example.jetpack.data.entity.Shoe
 import com.example.jetpack.ui.adapter.ShoeAdapter
+import com.example.jetpack.ui.viewmodel.CustomViewModelProvider
+import com.example.jetpack.ui.viewmodel.ShoeModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_market.*
@@ -28,6 +32,10 @@ class MarketFragment : Fragment() {
 
     val scope = CoroutineScope(Dispatchers.Main)
 
+    private val viewModel: ShoeModel by viewModels {
+        CustomViewModelProvider.providerShoeModelFactory(context!!)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,56 +49,41 @@ class MarketFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         tv_showshoes.setOnClickListener {
-            getShoesFromAssets()
-        }
-    }
-
-
-    /**
-     * 获取assets中shoes.json的数据
-     */
-    fun getShoesFromAssets() {
-        try {
-            scope.launch {
-                var resultjson = withContext(Dispatchers.IO) {
-                    MyApplication.myapplication.applicationContext.assets.open("shoes.json").use {
-                        BufferedReader(InputStreamReader(it, "utf-8")).use { bf ->
-                            var line = ""
-                            var stringBuilder = StringBuilder()
-                            while (bf.readLine()?.let {
-                                    line = it
-                                } != null) {
-                                stringBuilder.append(line)
-                            }
-                            stringBuilder.toString()
-                        }
-
-                    }
-                }
-                val shoeType = object : TypeToken<List<Shoe>>() {}.type
-                val shoeList = Gson().fromJson(resultjson, shoeType) as List<Shoe>
-                initRecyclerview(shoeList)
+            val showbrandshoes = et_showbrandshoes.text.toString()
+            if (showbrandshoes.isEmpty()) {
+                viewModel.setBrand("ALL")
+            } else {
+                viewModel.setBrand(showbrandshoes)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
+        viewModel.getShoesFromAssets()
+        initRecyclerview()
     }
 
     /**
      * 初始化recyclerview
      */
-    private fun initRecyclerview(shoeList: List<Shoe>) {
+    private fun initRecyclerview() {
         //创建一个layout管理器
         val linearlayoutmanager = LinearLayoutManager(context)
         linearlayoutmanager.orientation = RecyclerView.VERTICAL
         rv_shoe.layoutManager = linearlayoutmanager
 
         //初始化recyclerview的适配器
-        val shoeAdapter = ShoeAdapter(context!!, shoeList)
+        val shoeAdapter = ShoeAdapter(context!!)
         rv_shoe.adapter = shoeAdapter
-        //数据刷新
-        (rv_shoe.adapter as ShoeAdapter).notifyDataSetChanged()
+        onSubscribeUi(shoeAdapter)
     }
 
-
+    /**
+     * 鞋子数据更新的通知
+     */
+    private fun onSubscribeUi(adapter: ShoeAdapter) {
+        viewModel.shoes.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                adapter.updateShoeData(it)
+                adapter.notifyDataSetChanged()
+            }
+        })
+    }
 }

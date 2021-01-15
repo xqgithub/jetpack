@@ -14,9 +14,20 @@
         android:text="显示数据"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/et_showbrandshoes"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/shape_table_item_edit"
+        android:hint="brand"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_showshoes"
+        app:layout_constraintStart_toEndOf="@+id/tv_showshoes"
+        app:layout_constraintTop_toTopOf="@+id/tv_showshoes" />
 
 
     <androidx.recyclerview.widget.RecyclerView
