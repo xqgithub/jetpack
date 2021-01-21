@@ -26,23 +26,23 @@ class ShoeModel constructor(private val shoeRepository: ShoeRepository) : ViewMo
     }
 
     //1. 鞋子集合的观察类,不带分页的
-//    val shoes = brand.switchMap {
-//        if (it == "All") {
-//            shoeRepository.getAllShoes()
-//        } else {
-//            shoeRepository.getShoesByBrand(it)
-//        }
-//    }
+    val shoes = brand.switchMap {
+        if (it == "All") {
+            shoeRepository.getAllShoes()
+        } else {
+            shoeRepository.getShoesByBrand(it)
+        }
+    }
 
     //2. 鞋子集合的观察类，带分页的
-    val shoes = LivePagedListBuilder<Int, Shoe>(
-        CustomPageDataSourceFactory(shoeRepository) // DataSourceFactory
-        , PagedList.Config.Builder()
-            .setPageSize(5) // 分页加载的数量
-            .setEnablePlaceholders(false) // 当item为null是否使用PlaceHolder展示
-            .setInitialLoadSizeHint(5) // 预加载的数量
-            .build()
-    ).build()
+//    val shoes = LivePagedListBuilder<Int, Shoe>(
+//        CustomPageDataSourceFactory(shoeRepository) // DataSourceFactory
+//        , PagedList.Config.Builder()
+//            .setPageSize(5) // 分页加载的数量
+//            .setEnablePlaceholders(false) // 当item为null是否使用PlaceHolder展示
+//            .setInitialLoadSizeHint(5) // 预加载的数量
+//            .build()
+//    ).build()
 
 
     fun setBrand(brand: String) {
@@ -53,38 +53,36 @@ class ShoeModel constructor(private val shoeRepository: ShoeRepository) : ViewMo
     /**
      * 获取assets中shoes.json的数据
      */
-    fun getShoesFromAssets() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                //1.先查看表中是否有数据，如果有数据先清空数据
-                val listshoes = shoeRepository.getAllShoes2()
-                listshoes?.let {
-                    println("shoe表中的数量为：${it.size}")
-                    if (it.isNotEmpty()) {
-                        shoeRepository.deleteShoes(it)
-                    }
+    suspend fun getShoesFromAssets() = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            //1.先查看表中是否有数据，如果有数据先清空数据
+            val listshoes = shoeRepository.getAllShoes2()
+            listshoes?.let {
+                println("shoe表中的数量为：${it.size}")
+                if (it.isNotEmpty()) {
+                    shoeRepository.deleteShoes(it)
                 }
-                //2.获取assets中shoes.json的数据
-                var resultjson: String?
-                MyApplication.myapplication.applicationContext.assets.open("shoes.json").use {
-                    BufferedReader(InputStreamReader(it, "utf-8")).use { bf ->
-                        var line = ""
-                        var stringBuilder = StringBuilder()
-                        while (bf.readLine()?.let {
-                                line = it
-                            } != null) {
-                            stringBuilder.append(line)
-                        }
-                        resultjson = stringBuilder.toString()
+            }
+            //2.获取assets中shoes.json的数据
+            var resultjson: String?
+            MyApplication.myapplication.applicationContext.assets.open("shoes.json").use {
+                BufferedReader(InputStreamReader(it, "utf-8")).use { bf ->
+                    var line = ""
+                    var stringBuilder = StringBuilder()
+                    while (bf.readLine()?.let {
+                            line = it
+                        } != null) {
+                        stringBuilder.append(line)
                     }
+                    resultjson = stringBuilder.toString()
                 }
+            }
 
-                resultjson?.let {
-                    val shoeType = object : TypeToken<List<Shoe>>() {}.type
-                    val shoeList = Gson().fromJson(it, shoeType) as List<Shoe>
-                    //3.插入数据到shoe表中
-                    shoeRepository.insertShoes(shoeList)
-                }
+            resultjson?.let {
+                val shoeType = object : TypeToken<List<Shoe>>() {}.type
+                val shoeList = Gson().fromJson(it, shoeType) as List<Shoe>
+                //3.插入数据到shoe表中
+                shoeRepository.insertShoes(shoeList)
             }
         }
     }

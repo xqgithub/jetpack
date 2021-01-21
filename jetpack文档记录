@@ -220,5 +220,6 @@ a.创建CustomPageDataSource继承PageKeyedDataSource<Int, Shoe>()
 b.创建CustomPageDataSourceFactory继承DataSource.Factory<Int, Shoe>()
 c.创建ShoePageListAdapter继承PagedListAdapter<Shoe, ShoePageListAdapter.ShoeAdapterViewHolder>(ShoeDiffCallback())
 
+2.Room数据源：
 
 ==================================================== 分割线 ====================================================

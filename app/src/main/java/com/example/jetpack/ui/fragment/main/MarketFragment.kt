@@ -57,8 +57,12 @@ class MarketFragment : Fragment() {
                 viewModel.setBrand(showbrandshoes)
             }
         }
-        viewModel.getShoesFromAssets()
-        initRecyclerview()
+
+
+        scope.launch {
+            val job = viewModel.getShoesFromAssets()
+            initRecyclerview()
+        }
     }
 
     /**
@@ -71,14 +75,14 @@ class MarketFragment : Fragment() {
         rv_shoe.layoutManager = linearlayoutmanager
 
         //初始化recyclerview的适配器
-//        val shoeAdapter = ShoeAdapter(context!!)
-//        rv_shoe.adapter = shoeAdapter
-//        onSubscribeUi(shoeAdapter)
+        val shoeAdapter = ShoeAdapter(context!!)
+        rv_shoe.adapter = shoeAdapter
+        onSubscribeUi(shoeAdapter)
 
 
-        val shoePageListAdapter = ShoePageListAdapter(context!!)
-        rv_shoe.adapter = shoePageListAdapter
-        onSubscribeUi2(shoePageListAdapter)
+//        val shoePageListAdapter = ShoePageListAdapter(context!!)
+//        rv_shoe.adapter = shoePageListAdapter
+//        onSubscribeUi2(shoePageListAdapter)
     }
 
     /**
@@ -94,11 +98,11 @@ class MarketFragment : Fragment() {
     }
 
 
-    private fun onSubscribeUi2(adapter: ShoePageListAdapter) {
-        viewModel.shoes.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                adapter.submitList(it)
-            }
-        })
-    }
+//    private fun onSubscribeUi2(adapter: ShoePageListAdapter) {
+//        viewModel.shoes.observe(viewLifecycleOwner, Observer {
+//            if (it != null) {
+//                adapter.submitList(it)
+//            }
+//        })
+//    }
 }
