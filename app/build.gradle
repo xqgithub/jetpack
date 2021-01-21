@@ -64,6 +64,8 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
     //paging
     implementation "androidx.paging:paging-runtime:$pagingVersion"
+    //workmanger
+    implementation "androidx.work:work-runtime-ktx:$rootProject.workVersion"
 
     //stetho 调试工具
     implementation "com.facebook.stetho:stetho:1.4.1"
@@ -80,5 +82,6 @@ dependencies {
     /** glide **/
     implementation "com.github.bumptech.glide:glide:4.11.0"
     kapt "com.github.bumptech.glide:compiler:4.11.0"
+
 
 }

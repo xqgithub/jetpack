@@ -69,7 +69,7 @@ class RegisterModel constructor(
                 isExistUser?.let {
                     Toast.makeText(MyApplication.myapplication.applicationContext, "用户已经存在，请重新注册", Toast.LENGTH_SHORT).show()
                 } ?: let {
-                    val tempuser = User(n.value!!, mail.value!!, p.value!!, 30, "新世界---人鱼岛")
+                    val tempuser = User(n.value!!, mail.value!!, p.value!!, 30, "新世界---人鱼岛", "")
                     val id = userRepostitory.register(tempuser)
                     val user = userRepostitory.findUserById(id)
                     user?.let {

@@ -7,6 +7,7 @@ import com.example.jetpack.data.repository.BookRepostitory
 import com.example.jetpack.data.repository.ShoeRepository
 import com.example.jetpack.data.repository.UserRepostitory
 import com.example.jetpack.ui.viewmodel.factory.InfoModelFactory
+import com.example.jetpack.ui.viewmodel.factory.MeModelFactory
 import com.example.jetpack.ui.viewmodel.factory.RegisterModelFactory
 import com.example.jetpack.ui.viewmodel.factory.ShoeModelFactory
 
@@ -28,4 +29,8 @@ object CustomViewModelProvider {
     }
 
 
+    fun providerMeModel(context: Context): MeModelFactory {
+        val userRepostitory: UserRepostitory = RepositoryProvider.providerUserRepository(context)
+        return MeModelFactory(userRepostitory)
+    }
 }

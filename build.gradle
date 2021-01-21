@@ -20,6 +20,8 @@ buildscript {
     ext.gsonVersion = '2.8.2'
     //paging
     ext.pagingVersion = '2.1.0-alpha01'
+    //workmanger
+    ext.workVersion = "2.0.1"
 
     /** 如果需要的话，从https://jcenter.bintray.com/下载code reposities。 **/
     repositories {

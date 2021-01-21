@@ -223,3 +223,54 @@ c.创建ShoePageListAdapter继承PagedListAdapter<Shoe, ShoePageListAdapter.Shoe
 2.Room数据源：
 
 ==================================================== 分割线 ====================================================
+jetpack组件---WorkManager
+
+一、做什么？
+WorkManager是用来执行后台任务的
+
+二、选择WorkManager的理由
+1.版本兼容性强，向后兼容至API 14
+2.可以指定约束条件，比如可以选择必须在有网络的条件下执行
+3.可定时执行也可单次执行
+4.监听和管理任务状态
+5.多个任务可使用任务链
+6.保证任务执行，如当前执行条件不满足或者App进程被杀死，它会等到下次条件满足或者App进程打开后执行
+7.支持省电模式
+
+三、多线程任务如何选择？
+后台任务会消耗设备的系统资源，如若处理不当，可能会造成设备电量的急剧消耗，给用户带来糟糕的体验
+
+
+四、自定义Worker
+1.Worker：需要继承Worker，并复写doWork()方法，在doWork()方法中放入你需要在后台执行的代码。
+2.WorkRequest：指后台工作的请求，你可以在后台工作的请求中添加约束条件
+3.WorkManager：真正让Worker在后台执行的类
+
+五、工作流程
+1.WorkRequest生成以后，Internal TaskExecutor将它存入WorkManger的数据库中，这也是为什么即使在程序退出之后，WorkManger也能保证后台任务在下次启动后条件满足的情况下执行
+2.当约束条件满足的情况下，Internal TaskExecutor告诉WorkFactory生成Worker
+3.后台任务Worker执行。
+
+六、适合自己的Worker
+四种Worker给我们使用，分别为：
+1.自动运行在后台线程的Worker、
+2.结合协程的CoroutineWorker、
+3.结合RxJava2的RxWorker
+4.三个类的基类的ListenableWorker
+
+七、使用方式
+1.自定义Worker
+2.创建WorkManager
+3.构建WorkRequest
+(1)约束
+(2)任务链
+4.发送WorkRequest
+5.监听任务状态
+
+
+
+
+
+
+
+==================================================== 分割线 ====================================================

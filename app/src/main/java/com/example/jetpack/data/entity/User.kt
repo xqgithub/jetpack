@@ -16,7 +16,9 @@ data class User(
     @ColumnInfo(name = "user_age")
     val userage: Int,
     @ColumnInfo(name = "user_address")
-    val address: String? = ""
+    val address: String? = "",
+    @ColumnInfo(name = "user_url")
+    var headImage: String // 头像地址
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_id")
