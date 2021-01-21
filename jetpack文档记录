@@ -267,10 +267,64 @@ WorkManager是用来执行后台任务的
 4.发送WorkRequest
 5.监听任务状态
 
+==================================================== 分割线 ====================================================
+jetpack组件---StartUp
+
+一、常用的库初始化的方法
+1.自定义 Application，并在 Application#onCreate() 中进行初始化。优点也是它的缺点，需要手动调用，但是能自己控制调用时机。
+2.自定义 ContentProvider，并在 ContentProvider#onCreate() 中进行初始化。优点是自动调用，降低开发者的学习成本，
+缺点是 ContentProvider 是一个相对来说比较重的操作，初始化一个 ContentProvider 带来的开销比较小，如果大家开发的第三方库都使用这种操作呢？结果可想而知，延长我们 App 的启动时间
+
+二、StartUp
+StartUp 采用的是第二种方式，它的目的是仅仅是为了使用一个 ConttentProvider 来初始化那些需要初始化的库
+
+三、添加依赖
+dependencies {
+    implementation "androidx.startup:startup-runtime:1.0.0-alpha02"
+}
+
+四、实现Initializer
+class RoomInitializer : Initializer<AppDataBase> {
+    override fun create(context: Context): AppDataBase {
+        return AppDataBase.getInstance(context)
+    }
+
+    override fun dependencies(): List<Class<out Initializer<*>>> {
+        return emptyList()
+    }
+}
+1.onCreate：在这个方法执行需要初始化的动作，比如在上面的 RoomInitializer 中的 AppDataBase.getInstance(context)，我会进行数据的初始化
+2.dependencies：比如说我当前库 A 依赖库 B，B 初始化成功以后才能进行 A 的初始化，这个时候我就需要返回包含 B 的 Initializer 的 Class 的 List
+
+五、在AndroidManifest文件中声明InitializationProvider
+<provider
+    android:name="androidx.startup.InitializationProvider"
+    android:authorities="com.joe.jetpackdemo.androidx-startup"
+    android:exported="false"
+    tools:node="merge">
+    <!-- This entry makes ExampleLoggerInitializer discoverable. -->
+    <meta-data
+        android:name="com.joe.jetpackdemo.common.start.PushInitializer"
+        android:value="androidx.startup" />
+</provider>
+
+1.meta-data 标签，需要初始化的 Initializer 都会被声明成 meta-data
 
 
+六、使用懒加载
+<provider
+    android:name="androidx.startup.InitializationProvider"
+    android:authorities="com.joe.jetpackdemo.androidx-startup"
+    android:exported="false"
+    tools:node="merge">
+    <!-- This entry makes ExampleLoggerInitializer discoverable. -->
+    <meta-data
+        android:name="com.joe.jetpackdemo.common.start.PushInitializer"
+        android:value="androidx.startup"
+        tools:node="remove"/>
+</provider>
 
-
-
+1.方法是在 meta-data 标签中加入 tools:node="remove"：
+2.之后在你想初始化的地方  AppInitializer.getInstance(context).initializeComponent(PushInitializer::class.java)
 
 ==================================================== 分割线 ====================================================
