@@ -41,9 +41,13 @@ class MeFragment : Fragment() {
 
         //任务状态观测
         model.outPutWorkInfos.observe(this, Observer {
-            val state = it[0]
-            if (state.state.isFinished) {
-                 // 更新头像
+            try {
+                val state = it[0]
+                if (state.state.isFinished) {
+                    // 更新头像
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         })
     }
